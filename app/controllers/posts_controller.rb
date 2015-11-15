@@ -68,6 +68,25 @@ class PostsController < ApplicationController
     end
   end
 
+  def vote
+    if !user_signed_in?
+      flash[:notice] = "You must be signed in to vote."
+      redirect_to root_path
+    end
+    @post = Post.find(params[:id])
+    new_vote_count = @post.votes_count + 1 if params[:vote] == "true"
+    new_vote_count = @post.votes_count - 1 if params[:vote] == "false"
+    respond_to do |format|
+      if @post.update(votes_count: new_vote_count)
+        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post

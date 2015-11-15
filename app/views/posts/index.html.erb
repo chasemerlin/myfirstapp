@@ -5,8 +5,12 @@
     <% @posts.each do |post| %>
       <div class="post well">
         <p class="post-votes">
-          <span class="glyphicon glyphicon-arrow-up"></span>
-          <span class="glyphicon glyphicon-arrow-down"></span>
+          <%= link_to vote_post_path(post.id, vote: true), method: :post do %>
+            <span class="glyphicon glyphicon-arrow-up"></span>
+          <% end %>
+          <%= link_to(vote_post_path post.id, vote: false) do %>
+            <span class="glyphicon glyphicon-arrow-down"></span>
+          <% end %>
           <span class="badge"><%= post.votes_count %><span>
         </p>
         <h5 class="post-content"><%= link_to "#{post.content}", post_path(post) %></h5>
