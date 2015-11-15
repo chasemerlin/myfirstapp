@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @post.content %>
+</p>
+
+<p>
+  <strong>Votes count:</strong>
+  <%= @post.votes_count %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @post.user_id %>
+</p>
+
+<p>
+  <strong>Parent post:</strong>
+  <%= @post.parent_post_id %>
+</p>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
