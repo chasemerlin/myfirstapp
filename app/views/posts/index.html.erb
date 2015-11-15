@@ -5,22 +5,22 @@
     <% @posts.each do |post| %>
       <div class="post well">
         <p class="post-votes">
-          <%= link_to vote_post_path(post.id, vote: true), method: :post do %>
+          <%= link_to vote_post_path(post.id, vote: true), method: :post, class: "vote-link vote-link-up" do %>
             <span class="glyphicon glyphicon-arrow-up"></span>
           <% end %>
-          <%= link_to(vote_post_path post.id, vote: false) do %>
+          <span class="badge"><%= post.votes_count %></span>
+          <%= link_to vote_post_path(post.id, vote: false), method: :post, class: "vote-link vote-link-down" do %>
             <span class="glyphicon glyphicon-arrow-down"></span>
           <% end %>
-          <span class="badge"><%= post.votes_count %><span>
         </p>
         <h5 class="post-content"><%= link_to "#{post.content}", post_path(post) %></h5>
         <p class="post-details">
           Submitted 
           <span class="post-date"><%= time_ago_in_words(post.created_at) %><span>
           ago by
-          <span class="post-user"> <%= post.user_id %></span>
+          <span class="post-user"> <%= User.find(post.user_id).email %></span>
         </p>
-        <p class="post-comments-count"><%= pluralize(post.child_posts.count, 'comment') %></p>
+        <p class="post-comments-count"><%= link_to "#{pluralize(post.child_posts.count, 'comment')}", post_path(post) %></p>
       </div>
     <% end %>
   </div>

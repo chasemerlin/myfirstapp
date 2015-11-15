@@ -5,4 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :posts
+
+  has_many :likes, foreign_key: :user_id
+  has_many :followed_posts, through: :likes, source: :post
 end

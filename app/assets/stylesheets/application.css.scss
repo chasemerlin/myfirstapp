@@ -13,3 +13,30 @@
  *= require_tree .
  *= require_self
  */
+ 
+ .post-votes {
+ 	float: left;
+ 	padding-top: 1%;
+ 	padding-right: 5%;
+
+   .badge, .vote-link {
+ 	display: block;
+   }
+
+   .vote-link {
+   	margin-left: 16%;
+   	font-size: 1.5rem;
+   }
+
+   .vote-link-up {
+   	margin-bottom: 5%;
+   }
+
+   .vote-link-down {
+   	margin-top: 5%;
+   }
+ }
+
+
+
+ 

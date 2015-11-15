@@ -69,20 +69,30 @@ class PostsController < ApplicationController
   end
 
   def vote
+    @post = Post.find(params[:id])
+    # Should break this sign in check into helper
     if !user_signed_in?
       flash[:notice] = "You must be signed in to vote."
       redirect_to root_path
-    end
-    @post = Post.find(params[:id])
-    new_vote_count = @post.votes_count + 1 if params[:vote] == "true"
-    new_vote_count = @post.votes_count - 1 if params[:vote] == "false"
-    respond_to do |format|
-      if @post.update(votes_count: new_vote_count)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+    elsif current_user.followed_posts.include? @post
+      flash[:notice] = "You have already voted on this post."
+      redirect_to posts_path
+    else
+      if params[:vote] == "true"
+        Like.create(user_id: current_user.id, post_id: @post.id, positive: true)
+        new_vote_count = @post.votes_count + 1
+      elsif params[:vote] == "false"
+        Like.create(user_id: current_user.id, post_id: @post.id, positive: true)
+        new_vote_count = @post.votes_count - 1
+      end
+      respond_to do |format|
+        if @post.update(votes_count: new_vote_count)
+          format.html { redirect_to posts_path, notice: 'Your vote has been counted.' }
+          format.json { render :show, status: :ok, location: @post }
+        else
+          format.html { redirect_to posts_path, notice: 'There was an error and your vote was not counted.' }
+          format.json { render json: @post.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
