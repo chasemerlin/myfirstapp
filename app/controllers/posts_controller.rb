@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     # Grab all posts which are originals for its thread
-    @posts = Post.where(parent_post_id: nil).order('votes_count desc')
+    @posts = Post.where(parent_post_id: nil).order(votes_count: :desc, created_at: :desc)
   end
 
   # GET /posts/1
@@ -15,7 +15,12 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
-    @post = Post.new
+    if !user_signed_in?
+      flash[:notice] = "You must sign in to post."
+      redirect_to posts_path
+    else
+      @post = Post.new
+    end
   end
 
   # GET /posts/1/edit
@@ -26,6 +31,7 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
+    @post.user_id = current_user.id
 
     respond_to do |format|
       if @post.save

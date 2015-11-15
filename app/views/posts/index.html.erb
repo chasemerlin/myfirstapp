@@ -1,17 +1,24 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h1>Monthly We <%= link_to 'New Idea', new_post_path %></h1>
 
-<h1>Monthly We</h1>
-
-<% @posts.each do |post| %>
-  <div class="post well">
-    <p class="post-content"><%= post.content %></p>
-    <p class="post-votes"><%= post.votes_count %></p>
-    <p class="post-user"><%= post.user_id %></p>
-    <p class="post-date"><%= time_ago_in_words(post.created_at) %> ago</p>
+    <% @posts.each do |post| %>
+      <div class="post well">
+        <p class="post-votes">
+          <span class="glyphicon glyphicon-arrow-up"></span>
+          <span class="glyphicon glyphicon-arrow-down"></span>
+          <span class="badge"><%= post.votes_count %><span>
+        </p>
+        <h5 class="post-content"><%= link_to "#{post.content}", post_path(post) %></h5>
+        <p class="post-details">
+          Submitted 
+          <span class="post-date"><%= time_ago_in_words(post.created_at) %><span>
+          ago by
+          <span class="post-user"> <%= post.user_id %></span>
+        </p>
+        <p class="post-comments-count"><%= pluralize(post.child_posts.count, 'comment') %></p>
+      </div>
+    <% end %>
   </div>
-  <% post.child_posts.order('votes_count desc').each do |comment| %>
-    <%= render partial: 'comment', locals: {comment: comment} %>
-  <% end %>
-<% end %>
+</div>
 
-<%= link_to 'New Post', new_post_path %>

@@ -1,8 +1,7 @@
 <div class="post well">
 	<p class="post-content"><%= comment.content %></p>
 	<p class="post-votes"><%= comment.votes_count %></p>
-	<p class="post-user">User: <%= comment.user_id %></p>
 	<p class="post-parent">Parent: <%= comment.parent_post_id %></p>
-	<p class="post-date"><%= time_ago_in_words(comment.created_at) %> ago</p>
+	<p class="post-details">Submitted <span class="post-date"><%= time_ago_in_words(comment.created_at) %><span>ago by<span class="post-user"> <%= comment.user_id %></span></p>
 </div>
 <%= render partial: 'comment', locals: {comment: comment.child_posts.order('votes_count desc').first} if !comment.child_posts.first.nil? %>

@@ -1,24 +1,14 @@
-<p id="notice"><%= notice %></p>
+<div class="post well">
+  <p class="post-votes"><%= link_to "#{@post.votes_count}", post_path(@post) %></p>
+  <h5 class="post-content"><%= @post.content %></h5>
+  <p class="post-details">Submitted <span class="post-date"><%= time_ago_in_words(@post.created_at) %><span>ago by<span class="post-user"> <%= @post.user_id %></span></p>
+</div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @post.content %>
-</p>
+<h6>Top Comments</h6>
 
-<p>
-  <strong>Votes count:</strong>
-  <%= @post.votes_count %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @post.user_id %>
-</p>
-
-<p>
-  <strong>Parent post:</strong>
-  <%= @post.parent_post_id %>
-</p>
+<% @post.child_posts.order('votes_count desc').each do |comment| %>
+  <%= render partial: 'comment', locals: {comment: comment} %>
+<% end %>
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+<%= link_to 'Back to Board', posts_path %>
